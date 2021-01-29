@@ -1,0 +1,70 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&display=swap");
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+header {
+  width: 100vw;
+  background-color: #151515;
+  height: 50px;
+}
+header .web-title {
+  font-family: "Bangers", cursive;
+  color: #ffffff;
+  background-color: #ed1d23;
+  padding: 0 10px;
+  font-size: 45px;
+}
+
+.banner {
+  width: 100vw;
+  height: 400px;
+  background-image: url(https://frontend-proyecto-comics.adaitw.org/hero.jpg);
+  background-size: cover;
+  position: relative;
+}
+.banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.search-and-results-container {
+  width: 100vw;
+}
+.search-and-results-container .search-and-results {
+  width: 80%;
+  padding: 20px;
+}
+
+.search {
+  margin: 60px 10px 80px;
+}
+.results-container {
+  margin: 0 10px;
+}
+
+footer {
+  height: 89px;
+  background-color: #151515;
+  color: #ffffff;
+}
+
+header, .search-and-results-container, footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search .search__input-container, .search .search__input-container--select-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+/*# sourceMappingURL=style.css.map */

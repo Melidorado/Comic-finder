@@ -1,0 +1,65 @@
+body {
+    margin: 0;
+    font-family: $main-font;
+}
+
+header {
+    width: 100vw;
+    background-color: $main-background-color;
+    height: 50px;
+    @extend %flex-centered;
+    .web-title {
+        font-family: $title-font;
+        color: $title-font-color;
+        background-color: $secondary-background-color;
+        padding:  0 10px;
+        font-size: 45px;
+    }
+}
+
+.banner {
+    width: 100vw;
+    height: 400px;
+    background-image: url(https://frontend-proyecto-comics.adaitw.org/hero.jpg);
+    background-size: cover;
+    position: relative;
+    &::before {
+        content:'';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0,0,0,0.5);
+    }
+}
+
+.search-and-results-container {
+    width: 100vw;
+    @extend %flex-centered;
+    .search-and-results {
+        width: 80%;
+        padding: 20px;
+    }
+}
+
+.search {
+    margin: 60px 10px 80px;
+    .search__input-container {
+        @extend %space-flex;
+    }
+    .search__input-container--select-search {
+        @extend %space-flex;
+    }
+}
+
+.results-container {
+    margin: 0 10px;
+}
+
+footer {
+    height: 89px;
+    background-color: $main-background-color;
+    @extend %flex-centered;
+    color: $title-font-color;
+}
