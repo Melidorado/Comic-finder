@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Bangers&display=swap");
-footer, .search-and-results-container, header {
+footer, .pages .pages-button, .pages, .search-and-results-container, header {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,6 +48,8 @@ header .web-title {
 
 .search-and-results-container {
   width: 100vw;
+  flex-direction: column;
+  position: relative;
 }
 .search-and-results-container .search-and-results {
   width: 80%;
@@ -178,10 +180,71 @@ header .web-title {
   background-color: #ed1d23;
 }
 
+.pages {
+  width: 100%;
+  margin-bottom: 80px;
+}
+.pages .pages-button {
+  font-size: 16px;
+  font-family: "Roboto", sans-serif;
+  background-color: #151515;
+  color: #ffffff;
+  border: 0;
+  padding: 10px 20px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: 0.2s;
+  outline-color: #ed1d23;
+  width: 40px;
+  height: 40px;
+  font-size: 25px;
+}
+.pages .pages-button:hover {
+  background-color: #ed1d23;
+}
+
+.disable-button {
+  color: #757575 !important;
+}
+
 footer {
   height: 89px;
   background-color: #151515;
   color: #ffffff;
+}
+
+.loader-container {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+}
+.loader-container .spin-loader {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #ed1d23;
+  border-radius: 50%;
+  border-color: #ed1d23 transparent #ed1d23 transparent;
+  animation-name: turnaround;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+@keyframes turnaround {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hidden {
+  display: none;
 }
 
 /*# sourceMappingURL=style.css.map */

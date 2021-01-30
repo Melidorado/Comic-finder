@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦸🏽‍♀️</text></svg>">
     <title>Ada Comics</title>
 </head>
@@ -147,6 +148,25 @@
 
             
         </div>
+        </div>
+
+        <div class="pages">
+            <button class="pages-button disable-button" id="first-page">
+                <i class="fas fa-angle-double-left"></i>
+            </button>
+            <button class="pages-button disable-button" id="previous-page">
+                <i class="fas fa-angle-left"></i>
+            </button>
+            <button class="pages-button" id="next-page">
+                <i class="fas fa-angle-right"></i>
+            </button>
+            <button class="pages-button" id="last-page">
+                <i class="fas fa-angle-double-right"></i>
+            </button>
+        </div>
+
+        <div class="loader-container hidden" id="loader-container">
+            <div class="spin-loader"></div>
         </div>
     </section>
 

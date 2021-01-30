@@ -19,4 +19,7 @@
     cursor: pointer;
     transition: 0.2s;
     outline-color: $secondary-background-color;
+    &:hover {
+        background-color: $secondary-background-color;
+    }
 }
