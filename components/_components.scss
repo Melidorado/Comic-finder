@@ -1,0 +1,22 @@
+@mixin select {
+    font-family: $main-font;
+    font-size: 14px;
+    font-weight: bold;
+    border: 0;
+    margin-bottom: 10px;
+    margin-right: 20px;
+    outline-color: $secondary-background-color;
+}
+
+@mixin button {
+    font-size: 16px;
+    font-family: $main-font;
+    background-color: $main-background-color;
+    color: $button-font-color;
+    border: 0;
+    padding: 10px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: 0.2s;
+    outline-color: $secondary-background-color;
+}
