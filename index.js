@@ -44,19 +44,25 @@ const showComicsCards = (comic) => {
     </article>`
 }
 
-const showInformationFromApi = (info, orderBy) => {
-    fetch(`${baseUrl}${info}?apikey=${apiKey}&orderBy=${orderBy}`)
+const showInformationFromApi = (inputSearch, collection = "comics", orderBy = "title") => {
+    let inputParam = ''
+
+    if (inputSearch) {
+        inputParam = `&titleStartsWith=${inputSearch}`
+    }
+
+    fetch(`${baseUrl}${collection}?apikey=${apiKey}&orderBy=${orderBy}${inputParam}`)
     .then(res => res.json())
     .then(information => {
     cardsContainer.innerHTML = ``
         information.data.results.map( comicOrCharacter => {
 
-            if (info == 'characters') {
+            if (collection == 'characters') {
                 return cardsContainer.innerHTML +=
                 showCharactersCards(comicOrCharacter)
                 
             }
-            if (info == 'comics') {
+            if (collection == 'comics') {
                 return cardsContainer.innerHTML +=
                 showComicsCards(comicOrCharacter)
             }
@@ -77,7 +83,7 @@ const showInformationFromApi = (info, orderBy) => {
     })    
 }
 
-showInformationFromApi('comics', 'title' )
+showInformationFromApi()
 
 const showComicCardInformation = (url) => {
 fetch(url)
@@ -121,27 +127,27 @@ const showComicWriters = comic => {
 const typeSearch = document.querySelector('#type-search')
 const alphabethicNewestSearch = document.querySelector('#alphabetic-newest-search')
 const form = document.querySelector('form')
+const inputSearch = document.querySelector('#text-search')
 
 form.onsubmit = (e) => {
     e.preventDefault()
     let order = ''
-    console.log(alphabethicNewestSearch.value)
-        if (alphabethicNewestSearch.value == 'a-z'){
-            order = 'title'
-        }
-        if (alphabethicNewestSearch.value == 'z-a') {
-            order = '-title' 
-        }
-        if (alphabethicNewestSearch.value == 'new') {
-            order = '-focDate' 
+        if (alphabethicNewestSearch.value){
+            order = `${alphabethicNewestSearch.value}`
         }
 
         console.log(order)
     showInformationFromApi(typeSearch.value, order ) 
     
-    fetch(`${baseUrl}comics?apikey=${apiKey}&orderBy=${order}`)
-    .then(res => res.json())
-    .then(information => {
-        console.log(information)
-    })
+}
+
+form.onsubmit = (e) => {
+    e.preventDefault()
+    console.log(inputSearch.value)
+        if (inputSearch.value !== ' '){
+            showInformationFromApi(inputSearch.value)
+
+        }
+    
+    
 }
