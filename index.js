@@ -44,10 +44,11 @@ const showComicsCards = (comic) => {
     </article>`
 }
 
-const showInformationFromApi = (inputSearch, collection = "comics", orderBy = "title") => {
+const showInformationFromApi = (inputSearch = " ", collection = "comics", orderBy = "title") => {
     let inputParam = ''
-
-    if (inputSearch) {
+    
+    if (inputSearch !== " " ) {
+        console.log(inputSearch !== ' ')
         inputParam = `&titleStartsWith=${inputSearch}`
     }
 
@@ -124,30 +125,14 @@ const showComicWriters = comic => {
 
 
 
-const typeSearch = document.querySelector('#type-search')
+const collectionSearch = document.querySelector('#type-search')
 const alphabethicNewestSearch = document.querySelector('#alphabetic-newest-search')
 const form = document.querySelector('form')
 const inputSearch = document.querySelector('#text-search')
 
 form.onsubmit = (e) => {
     e.preventDefault()
-    let order = ''
-        if (alphabethicNewestSearch.value){
-            order = `${alphabethicNewestSearch.value}`
-        }
-
-        console.log(order)
-    showInformationFromApi(typeSearch.value, order ) 
-    
-}
-
-form.onsubmit = (e) => {
-    e.preventDefault()
-    console.log(inputSearch.value)
-        if (inputSearch.value !== ' '){
-            showInformationFromApi(inputSearch.value)
-
-        }
-    
-    
+    return inputSearch.value !== ''
+    ? showInformationFromApi(inputSearch.value, collectionSearch.value, alphabethicNewestSearch.value)
+    : showInformationFromApi(" ", collectionSearch.value, alphabethicNewestSearch.value)
 }
