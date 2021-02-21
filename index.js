@@ -46,10 +46,20 @@ const showComicsCards = (comic) => {
 
 const showInformationFromApi = (inputSearch = " ", collection = "comics", orderBy = "title") => {
     let inputParam = ''
+
     
     if (inputSearch !== " " ) {
-        console.log(inputSearch !== ' ')
-        inputParam = `&titleStartsWith=${inputSearch}`
+
+        /* return collection == "comics"
+        ? inputParam = `&titleStartsWith=${inputSearch}`
+        : inputParam = `&nameStartsWith=${inputSearch}` */
+        if (collection == 'comics') {
+            console.log(collection.value)
+            inputParam = `&titleStartsWith=${inputSearch}`
+        }
+        else {
+            inputParam = `&nameStartsWith=${inputSearch}`
+        }
     }
 
     fetch(`${baseUrl}${collection}?apikey=${apiKey}&orderBy=${orderBy}${inputParam}`)
@@ -106,9 +116,7 @@ fetch(url)
                         <p class="writers">${showComicWriters(comic)}</p>
                         <h3>Descripción:</h3>
                         <p>${comic.description}</p>
-                    </div>`
-
-                    
+                    </div>`             
     })
 
 })
@@ -130,9 +138,27 @@ const alphabethicNewestSearch = document.querySelector('#alphabetic-newest-searc
 const form = document.querySelector('form')
 const inputSearch = document.querySelector('#text-search')
 
+collectionSearch.onchange = () => {
+    if (collectionSearch.value == 'characters') {
+        alphabethicNewestSearch.innerHTML= `
+        <option value="name">A-Z</option>
+        <option value="-name">Z-A</option>
+     `
+    }
+    else {
+        alphabethicNewestSearch.innerHTML= `
+        <option value="title">A-Z</option>
+        <option value="-title">Z-A</option>
+        <option value="-focDate">Mas Nuevos</option>
+        <option value="focDate">Mas Viejos</option>
+     `
+    }
+}
+
 form.onsubmit = (e) => {
     e.preventDefault()
     return inputSearch.value !== ''
     ? showInformationFromApi(inputSearch.value, collectionSearch.value, alphabethicNewestSearch.value)
     : showInformationFromApi(" ", collectionSearch.value, alphabethicNewestSearch.value)
 }
+
