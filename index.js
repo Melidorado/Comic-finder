@@ -47,19 +47,10 @@ const showComicsCards = (comic) => {
 const showInformationFromApi = (inputSearch = " ", collection = "comics", orderBy = "title") => {
     let inputParam = ''
 
-    
     if (inputSearch !== " " ) {
-
-        /* return collection == "comics"
+        collection == "comics"
         ? inputParam = `&titleStartsWith=${inputSearch}`
-        : inputParam = `&nameStartsWith=${inputSearch}` */
-        if (collection == 'comics') {
-            console.log(collection.value)
-            inputParam = `&titleStartsWith=${inputSearch}`
-        }
-        else {
-            inputParam = `&nameStartsWith=${inputSearch}`
-        }
+        : inputParam = `&nameStartsWith=${inputSearch}`
     }
 
     fetch(`${baseUrl}${collection}?apikey=${apiKey}&orderBy=${orderBy}${inputParam}`)
