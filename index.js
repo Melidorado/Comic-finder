@@ -83,10 +83,10 @@ const showComicsCards = (comic) => {
     </article>`
 }
 
-const showInformationFromApi = (collection = "comics", orderBy = "title", inputSearch = " ") => {
+const showInformationFromApi = (collection = "comics", orderBy = "title", inputSearch = null) => {
     let inputParam = ''
 
-    if (inputSearch !== " " ) {
+    if (inputSearch !== null ) {
         collection == "comics"
         ? inputParam = `&titleStartsWith=${inputSearch}`
         : inputParam = `&nameStartsWith=${inputSearch}`
@@ -96,9 +96,8 @@ const showInformationFromApi = (collection = "comics", orderBy = "title", inputS
     .then(res => res.json())
     .then(information => {
         totalQuantityOfCollection = information.data.total
-        console.log(totalQuantityOfCollection)
         console.log(information)
-    cardsContainer.innerHTML = ``
+        cardsContainer.innerHTML = ``
         information.data.results.map( comicOrCharacter => {
 
             if (collection == 'characters') {
@@ -112,6 +111,25 @@ const showInformationFromApi = (collection = "comics", orderBy = "title", inputS
             }
 
         });
+        let offset = information.data.offset
+
+        if (currentPage == 0) {
+            firstPage.disabled = true
+            previousPage.disabled = true
+        }
+        else{
+            firstPage.disabled = false
+            previousPage.disabled = false
+        }
+        if (offset + resultsPerPage > totalQuantityOfCollection) {
+            nextPage.disabled = true
+            lastPage.disabled = true
+        }
+        else {
+            nextPage.disabled = false
+            lastPage.disabled = false
+        }
+       
         comicInfoContainer.innerHTML = ``
 
         const comicCards = document.querySelectorAll('.comic-card')
