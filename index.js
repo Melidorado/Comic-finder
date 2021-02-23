@@ -5,11 +5,50 @@ const comicInfoContainer = document.querySelector('.comic-information__container
 
 const resultsContainer = document.querySelector('.results-container')
 
+const loader = document.querySelector("#loader-container")
+
 const firstPage = document.querySelector("#first-page")
 const previousPage = document.querySelector("#previous-page")
 const nextPage = document.querySelector("#next-page")
 const lastPage = document.querySelector("#last-page")
-const loader = document.querySelector("#loader-container")
+
+let currentPage = 0
+const resultsPerPage = 20
+let totalQuantityOfCollection = ''
+
+const checkInputSearch = () => {
+    if (inputSearch.value !== "") {
+        return inputSearch.value
+    }
+}
+
+nextPage.onclick = () => {
+    currentPage ++
+    showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkInputSearch())
+}
+
+previousPage.onclick = () => {
+    currentPage --
+    showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkInputSearch())
+}
+
+firstPage.onclick = () => {
+    currentPage = 0
+    showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkInputSearch())
+}
+
+lastPage.onclick = () => {
+    const remainder = totalQuantityOfCollection % resultsPerPage
+    if (remainder > 0) {
+
+        currentPage = (totalQuantityOfCollection - (remainder)) / resultsPerPage
+    }
+    else {
+        currentPage = (totalQuantityOfCollection / resultsPerPage) - 1
+    }
+    showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkInputSearch())
+}
+
 
 const checkIfThereIsImageInCharacter = comic => {
     return comic.thumbnail.path.endsWith(`image_not_available`)
@@ -44,7 +83,7 @@ const showComicsCards = (comic) => {
     </article>`
 }
 
-const showInformationFromApi = (inputSearch = " ", collection = "comics", orderBy = "title") => {
+const showInformationFromApi = (collection = "comics", orderBy = "title", inputSearch = " ") => {
     let inputParam = ''
 
     if (inputSearch !== " " ) {
@@ -53,9 +92,12 @@ const showInformationFromApi = (inputSearch = " ", collection = "comics", orderB
         : inputParam = `&nameStartsWith=${inputSearch}`
     }
 
-    fetch(`${baseUrl}${collection}?apikey=${apiKey}&orderBy=${orderBy}${inputParam}`)
+    fetch(`${baseUrl}${collection}?apikey=${apiKey}&orderBy=${orderBy}${inputParam}&offset=${currentPage * resultsPerPage}`)
     .then(res => res.json())
     .then(information => {
+        totalQuantityOfCollection = information.data.total
+        console.log(totalQuantityOfCollection)
+        console.log(information)
     cardsContainer.innerHTML = ``
         information.data.results.map( comicOrCharacter => {
 
@@ -149,7 +191,12 @@ collectionSearch.onchange = () => {
 form.onsubmit = (e) => {
     e.preventDefault()
     return inputSearch.value !== ''
-    ? showInformationFromApi(inputSearch.value, collectionSearch.value, alphabethicNewestSearch.value)
-    : showInformationFromApi(" ", collectionSearch.value, alphabethicNewestSearch.value)
+    ? showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, inputSearch.value)
+    : showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value)
 }
+
+
+
+
+
 
