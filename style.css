@@ -227,6 +227,9 @@ header .web-title {
 .disable-button {
   color: #757575 !important;
 }
+.disable-button:hover {
+  background-color: #151515 !important;
+}
 
 footer {
   height: 89px;

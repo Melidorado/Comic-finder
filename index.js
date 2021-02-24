@@ -116,18 +116,26 @@ const showInformationFromApi = (collection = "comics", orderBy = "title", inputS
         if (currentPage == 0) {
             firstPage.disabled = true
             previousPage.disabled = true
+            firstPage.classList.add('disable-button')
+            previousPage.classList.add('disable-button')
         }
         else{
             firstPage.disabled = false
             previousPage.disabled = false
+            firstPage.classList.remove('disable-button')
+            previousPage.classList.remove('disable-button')
         }
         if (offset + resultsPerPage > totalQuantityOfCollection) {
             nextPage.disabled = true
             lastPage.disabled = true
+            nextPage.classList.add('disable-button')
+            lastPage.classList.add('disable-button')
         }
         else {
             nextPage.disabled = false
             lastPage.disabled = false
+            nextPage.classList.remove('disable-button')
+            lastPage.classList.remove('disable-button')
         }
        
         comicInfoContainer.innerHTML = ``
@@ -208,10 +216,13 @@ collectionSearch.onchange = () => {
 
 form.onsubmit = (e) => {
     e.preventDefault()
+    restartPages()
     return inputSearch.value !== ''
     ? showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, inputSearch.value)
     : showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value)
 }
+
+const restartPages = () => currentPage = 0
 
 
 

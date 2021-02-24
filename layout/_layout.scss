@@ -193,6 +193,9 @@ header {
 
 .disable-button {
     color: $disable-button-color !important;
+    &:hover {
+        background-color: $main-background-color !important;
+    }
 }
 
 
