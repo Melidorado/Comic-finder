@@ -147,7 +147,7 @@ const showInformationFromApi = (collection = "comics", orderBy = "title", inputS
                 comicId = e.target.dataset.id
                 cardsContainer.innerHTML = ``
                 resultsContainer.innerHTML = ``
-                showComicCardInformation(`${baseUrl}${info}/${comicId}?apikey=${apiKey}`)
+                showComicCardInformation(`${baseUrl}${collection}/${comicId}?apikey=${apiKey}`)
             }
         })
     })    
@@ -159,6 +159,7 @@ const showComicCardInformation = (url) => {
 fetch(url)
 .then(res => res.json())
 .then(comic => {
+    console.log(comic)
     comic.data.results.map( comic => {
         const comicInfoContainer = document.querySelector('.comic-information__container')
         comicInfoContainer.classList.remove('hidden')
@@ -174,7 +175,7 @@ fetch(url)
                         <h3>Guionistas:</h3>
                         <p class="writers">${showComicWriters(comic)}</p>
                         <h3>Descripción:</h3>
-                        <p>${comic.description}</p>
+                        <p>${comic.description || "No disponible"}</p>
                     </div>`             
     })
 
@@ -182,10 +183,10 @@ fetch(url)
 }
 
 const showComicWriters = comic => {
-    return comic.creators.items.map( creator => {
+    return comic.creators.items.filter( creator => {
         return creator.role == "writer"
         ? ` ${creator.name}`
-        : ` `  
+        : ``  
     })
 }
     
