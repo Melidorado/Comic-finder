@@ -15,6 +15,7 @@ const lastPage = document.querySelector("#last-page")
 let currentPage = 0
 const resultsPerPage = 20
 let totalQuantityOfCollection = ''
+const noInfoAvailableMessage = 'No disponible'
 
 const checkInputSearch = () => {
     if (inputSearch.value !== "") {
@@ -59,7 +60,7 @@ const checkIfThereIsImageInCharacter = comic => {
 const showCharactersCards = (character) => {
     return `<article class="character-card" >
          <div class="character-card__image-container">
-            <img class="character-card__image" src="${checkIfThereIsImageInCharacter(character)}"/>
+            <img class="character-card__image" data-id="${character.id}" src="${checkIfThereIsImageInCharacter(character)}"/>
         </div>
         <div class="character-card__name-container">
             <h3 class="character-card__name">${character.name}</h3>
@@ -96,7 +97,12 @@ const showInformationFromApi = (collection = "comics", orderBy = "title", inputS
     .then(res => res.json())
     .then(information => {
         totalQuantityOfCollection = information.data.total
+        resultsContainer.innerHTML = `
+            <h2 class="results-container__title">Resultados</h2>
+            <h4 class="results-container__total-results">${totalQuantityOfCollection} RESULTADOS</h4>`
+        
         console.log(information)
+
         cardsContainer.innerHTML = ``
         information.data.results.map( comicOrCharacter => {
 
@@ -141,6 +147,7 @@ const showInformationFromApi = (collection = "comics", orderBy = "title", inputS
         comicInfoContainer.innerHTML = ``
 
         const comicCards = document.querySelectorAll('.comic-card')
+        const charactersCards = document.querySelectorAll('.character-card')
 
         comicCards.forEach(card => {
             card.onclick = (e) => {
@@ -150,10 +157,43 @@ const showInformationFromApi = (collection = "comics", orderBy = "title", inputS
                 showComicCardInformation(`${baseUrl}${collection}/${comicId}?apikey=${apiKey}`)
             }
         })
+
+        charactersCards.forEach(card => {
+            card.onclick = (e) => {
+                characterId = e.target.dataset.id
+                cardsContainer.innerHTML = ``
+                resultsContainer.innerHTML = ``
+                showCharacterCardInformation(`${baseUrl}${collection}/${characterId}?apikey=${apiKey}`)
+            }
+        })
     })    
 }
 
 showInformationFromApi()
+
+const showCharacterCardInformation = (url) => {
+    fetch(url)
+    .then(res => res.json())
+    .then(character => {
+        console.log(character)
+        character.data.results.map( character => {
+            const comicInfoContainer = document.querySelector('.comic-information__container')
+            comicInfoContainer.classList.remove('hidden')
+            comicInfoContainer.innerHTML = ``
+            comicInfoContainer.innerHTML =
+                    `<div class="comic-information__image">
+                        <img src="${checkIfThereIsImageInCharacter(character)}" alt="">
+                    </div>
+                    <div class="comic-information">
+                        <h2>${character.name}</h2>
+                        <p>${character.description || "No disponible"}</p>
+                    </div>` 
+        /* const urlWithCharacters = comic.characters.collectionURI
+        showCharactersFromComic(urlWithCharacters) */
+    })
+
+})
+}
 
 const showComicCardInformation = (url) => {
 fetch(url)
@@ -173,24 +213,63 @@ fetch(url)
                         <h3>Publicado:</h3>
                         <p>18/12/2019</p>
                         <h3>Guionistas:</h3>
-                        <p class="writers">${showComicWriters(comic)}</p>
+                        <p class="writers">${checkIfThereIsWritersInformation(comic)}</p>
                         <h3>Descripción:</h3>
                         <p>${comic.description || "No disponible"}</p>
-                    </div>`             
+                    </div>` 
+        const urlWithCharacters = comic.characters.collectionURI
+        showCharactersFromComic(urlWithCharacters)
     })
 
 })
 }
 
-const showComicWriters = comic => {
-    return comic.creators.items.filter( creator => {
-        return creator.role == "writer"
-        ? ` ${creator.name}`
-        : ``  
+const checkIfThereIsWritersInformation = comic => {
+    let creators = comic.creators.items
+    return creators.length > 0 && isAWriter(creators)
+    ? showComicWriters(comic)
+    : noInfoAvailableMessage
+}
+
+const isAWriter = creators => {
+    return creators.some( creator => {
+        return creator.role === 'writer'
     })
 }
-    
 
+const showComicWriters = comic => {
+    return comic.creators.items.filter(autor => {
+        return autor.role === 'writer'
+    }).map(writer => {return writer.name})
+}
+    
+const showCharactersFromComic = (url) => {
+    fetch(`${url}?apikey=${apiKey}`)
+.then(res => res.json())
+.then(characters => {
+    console.log(characters)
+    if (characters.data.results.length > 0) {
+    characters.data.results.map( character => {
+        console.log(character.name)
+        totalQuantityOfCollection = characters.data.total
+        resultsContainer.innerHTML = `
+            <h2 class="results-container__title">Personajes</h2>
+            <h4 class="results-container__total-results">${totalQuantityOfCollection} RESULTADOS</h4>
+            `
+        return cardsContainer.innerHTML +=
+        showCharactersCards(character)
+    })}
+    else {
+        resultsContainer.innerHTML = `
+            <h2 class="results-container__title">Personajes</h2>
+            <h4 class="results-container__total-results">0 RESULTADOS</h4>
+            `
+        return cardsContainer.innerHTML = `
+        <h2 class="results-container__title">No se han encontrado resultados</h2> 
+        `
+    }
+})
+}
 
 
 const collectionSearch = document.querySelector('#type-search')

@@ -111,7 +111,7 @@ header .web-title {
   display: flex;
 }
 .comic-information__container .comic-information__image {
-  width: 25%;
+  max-width: 300px;
 }
 .comic-information__container .comic-information__image img {
   width: 100%;
@@ -120,6 +120,23 @@ header .web-title {
   margin-left: 60px;
 }
 .comic-information__container .comic-information h2 {
+  margin-top: 0;
+}
+
+.character-information__container {
+  margin: 60px 10px 80px;
+  display: flex;
+}
+.character-information__container .character-information__image {
+  max-width: 350px;
+}
+.character-information__container .character-information__image img {
+  width: 100%;
+}
+.character-information__container .character-information {
+  margin-left: 60px;
+}
+.character-information__container .character-information h2 {
   margin-top: 0;
 }
 

@@ -84,12 +84,29 @@ header {
     margin: 60px 10px 80px;
     display: flex;
     .comic-information__image {
-        width: 25%;
+        max-width: 300px;
         img {
             width: 100%;
         }
     }
     .comic-information {
+        margin-left: 60px;
+        h2 {
+            margin-top: 0;
+        }
+    }
+}
+
+.character-information__container{
+    margin: 60px 10px 80px;
+    display: flex;
+    .character-information__image {
+        max-width: 350px;
+        img {
+            width: 100%;
+        }
+    }
+    .character-information {
         margin-left: 60px;
         h2 {
             margin-top: 0;
