@@ -12,6 +12,7 @@ const firstPage = document.querySelector("#first-page")
 const previousPage = document.querySelector("#previous-page")
 const nextPage = document.querySelector("#next-page")
 const lastPage = document.querySelector("#last-page")
+const pageOfPages = document.querySelector('.total-pages')
 
 let currentPage = 0
 const resultsPerPage = 20
@@ -143,6 +144,7 @@ const showInformationFromApi = (collection = "comics", orderBy = "title", inputS
         showNumberOfResults(totalQuantityOfCollection)
         showInfoInHTML(information, collection)
         enableOrDisablePages(offset, totalQuantityOfCollection)
+        calculateAllPages()
         chooseCardForDetails(collection)
     })    
 }
@@ -247,6 +249,7 @@ const showComics = comics => {
         cardsContainer.innerHTML +=
         showComicsCards(comic)
         enableOrDisablePages(offset, totalQuantityOfCollection)
+        calculateAllPages()
         chooseCardForDetails('comics')
     })
 }
@@ -259,6 +262,7 @@ const showCharacters = characters => {
         cardsContainer.innerHTML +=
         showCharactersCards(character)
         enableOrDisablePages(offset, totalQuantityOfCollection)
+        calculateAllPages()
         chooseCardForDetails('characters')
     })
 }
@@ -423,7 +427,16 @@ const ablePages = () => {
     ableFirstAndPrevious()
 }
 
-
-
-
-
+const calculateAllPages = () => {
+    const remainder = totalQuantityOfCollection % resultsPerPage
+    let allPages = ''
+    if (remainder > 0){
+       allPages =((totalQuantityOfCollection - (remainder)) / resultsPerPage) + 1
+    }
+    else {
+        allPages = totalQuantityOfCollection / resultsPerPage
+    }
+    pageOfPages.innerHTML = `
+        <p>Pagina ${currentPage + 1} de ${allPages}</p>
+    `
+}
