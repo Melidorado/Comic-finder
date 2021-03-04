@@ -18,6 +18,8 @@ const resultsPerPage = 20
 let totalQuantityOfCollection = ''
 const noInfoAvailableMessage = 'No disponible'
 const auxiliarPicture = `./no-pic.jpg`
+let urlWithCharacters = ''
+let urlWithComics = ''
 
 
 
@@ -159,9 +161,8 @@ const showCharacterCardInformation = (character) => {
             <h2>${character.name}</h2>
             <p>${character.description || "No disponible"}</p>
         </div>` 
-        const urlWithCharacters = character.comics.collectionURI
-        showExtraInfo(urlWithCharacters, 'characters')
-        /* disabledPages() */
+        urlWithComics = character.comics.collectionURI
+        showExtraInfo(urlWithComics, 'characters')
     })
 }
 
@@ -169,6 +170,7 @@ const showComicCardInformation = (comic) => {
     console.log(comic)
     comic.data.results.map( comic => {
         showComicInfoSection()
+        urlWithCharacters = comic.characters.collectionURI
         comicInfoContainer.innerHTML =
                     `<div class="comic-information__image">
                         <img src="${checkIfThereIsImageInComic(comic)}" alt="">
@@ -182,9 +184,7 @@ const showComicCardInformation = (comic) => {
                         <h3>Descripción:</h3>
                         <p>${comic.description || "No disponible"}</p>
                     </div>` 
-        const urlWithCharacters = comic.characters.collectionURI
         showExtraInfo(urlWithCharacters, 'comics')
-        /* disabledPages() */
     })
 }
 
@@ -217,22 +217,23 @@ const showExtraInfo = (url, collection) => {
     })
 }
 
+const checkPages = collection => {
+    collection.data.total > 20
+    ? ableNextAndLast()
+    : disabledPages()
+}
+
 const showComicsOfCharacter = comics => {
-    console.log(comics)
-    if (comics.data.total > 0 && comics.data.total <= 20){
-        showComics(comics)
-        disabledPages()
-    }
-    else {
-        showNoResults()
-    }
-    /* comics.data.results.length > 0
+    checkPages(comics)
+    cardsContainer.innerHTML = ``
+    comics.data.results.length > 0
     ? showComics(comics)
-    :showNoResults() */
+    :showNoResults()
 }
     
 const showCharactersFromComic = characters => {
-    console.log(characters)
+    checkPages(characters)
+    cardsContainer.innerHTML = ``
     characters.data.results.length > 0
     ? showCharacters(characters)
     : showNoResults()
@@ -240,20 +241,24 @@ const showCharactersFromComic = characters => {
 
 const showComics = comics => {
     comics.data.results.map( comic => {
-        let totalQuantityOfCharacters = comics.data.total
-        showNumberOfResults(totalQuantityOfCharacters, 'Comics')
+        let offset = comics.data.offset
+        totalQuantityOfCollection = comics.data.total
+        showNumberOfResults(totalQuantityOfCollection, 'Comics')
         cardsContainer.innerHTML +=
         showComicsCards(comic)
+        enableOrDisablePages(offset, totalQuantityOfCollection)
         chooseCardForDetails('comics')
     })
 }
 
 const showCharacters = characters => {
     characters.data.results.map( character => {
-        let totalQuantityOfCharacters = characters.data.total
-        showNumberOfResults(totalQuantityOfCharacters, 'Personajes')
+        let offset = characters.data.offset
+        totalQuantityOfCollection = characters.data.total
+        showNumberOfResults(totalQuantityOfCollection, 'Personajes')
         cardsContainer.innerHTML +=
         showCharactersCards(character)
+        enableOrDisablePages(offset, totalQuantityOfCollection)
         chooseCardForDetails('characters')
     })
 }
@@ -311,17 +316,38 @@ const checkIfThereIsAnInputSearch = () => {
 
 nextPage.onclick = () => {
     currentPage ++
-    showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkIfThereIsAnInputSearch())
+    if (comicInfoContainer.classList.contains('hidden') && characterInfoContainer.classList.contains('hidden')) {
+        showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkIfThereIsAnInputSearch())
+    }
+    else {
+        comicInfoContainer.classList.contains('hidden')
+        ? showExtraInfo(urlWithComics, 'characters')
+        : showExtraInfo(urlWithCharacters, 'comics')
+    }
 }
 
 previousPage.onclick = () => {
     currentPage --
-    showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkIfThereIsAnInputSearch())
+    if (comicInfoContainer.classList.contains('hidden') && characterInfoContainer.classList.contains('hidden')) {
+        showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkIfThereIsAnInputSearch())
+    }
+    else {
+        comicInfoContainer.classList.contains('hidden')
+        ? showExtraInfo(urlWithComics, 'characters')
+        : showExtraInfo(urlWithCharacters, 'comics')
+    }
 }
 
 firstPage.onclick = () => {
     currentPage = 0
-    showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, )
+    if (comicInfoContainer.classList.contains('hidden') && characterInfoContainer.classList.contains('hidden')) {
+        showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, )
+    }
+    else {
+        comicInfoContainer.classList.contains('hidden')
+        ? showExtraInfo(urlWithComics, 'characters')
+        : showExtraInfo(urlWithCharacters, 'comics')
+    }
 }
 
 lastPage.onclick = () => {
@@ -330,7 +356,14 @@ lastPage.onclick = () => {
     ? currentPage = (totalQuantityOfCollection - (remainder)) / resultsPerPage
     :currentPage = (totalQuantityOfCollection / resultsPerPage) - 1
 
-    showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkIfThereIsAnInputSearch())
+    if (comicInfoContainer.classList.contains('hidden') && characterInfoContainer.classList.contains('hidden')) {
+        showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkIfThereIsAnInputSearch())
+    }
+    else {
+        comicInfoContainer.classList.contains('hidden')
+        ? showExtraInfo(urlWithComics, 'characters')
+        : showExtraInfo(urlWithCharacters, 'comics')
+    }
 }
 
 const restartPages = () => currentPage = 0
@@ -383,6 +416,11 @@ const enableOrDisablePages = (offset, totalQuantityOfCollection) => {
 const disabledPages = () => {
     disableNextAndLast()
     disableFirstAndPrevious()
+}
+
+const ablePages = () => {
+    ableNextAndLast()
+    ableFirstAndPrevious()
 }
 
 
