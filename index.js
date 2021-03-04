@@ -2,6 +2,7 @@ const baseUrl = 'https://gateway.marvel.com/v1/public/';
 const apiKey = 'fe90364a19b7f147e6c8d3fead703e80';
 const cardsContainer = document.querySelector('.cards-container')
 const comicInfoContainer = document.querySelector('.comic-information__container')
+const characterInfoContainer = document.querySelector('.character-information__container')
 
 const resultsContainer = document.querySelector('.results-container')
 
@@ -16,51 +17,20 @@ let currentPage = 0
 const resultsPerPage = 20
 let totalQuantityOfCollection = ''
 const noInfoAvailableMessage = 'No disponible'
-
-const checkInputSearch = () => {
-    if (inputSearch.value !== "") {
-        return inputSearch.value
-    }
-}
-
-nextPage.onclick = () => {
-    currentPage ++
-    showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkInputSearch())
-}
-
-previousPage.onclick = () => {
-    currentPage --
-    showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkInputSearch())
-}
-
-firstPage.onclick = () => {
-    currentPage = 0
-    showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkInputSearch())
-}
-
-lastPage.onclick = () => {
-    const remainder = totalQuantityOfCollection % resultsPerPage
-    if (remainder > 0) {
-
-        currentPage = (totalQuantityOfCollection - (remainder)) / resultsPerPage
-    }
-    else {
-        currentPage = (totalQuantityOfCollection / resultsPerPage) - 1
-    }
-    showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkInputSearch())
-}
+const auxiliarPicture = `./no-pic.jpg`
 
 
-const checkIfThereIsImageInCharacter = comic => {
+
+const checkIfThereIsImageInCharacter = (comic, size = "") => {
     return comic.thumbnail.path.endsWith(`image_not_available`)
-    ? `./no-pic.jpg`
-    : `${comic.thumbnail.path}/portrait_uncanny.${comic.thumbnail.extension}`
+    ? auxiliarPicture
+    : `${comic.thumbnail.path}${size}.${comic.thumbnail.extension}`
 }
 
 const showCharactersCards = (character) => {
-    return `<article class="character-card" >
+    return `<article class="character-card card" >
          <div class="character-card__image-container">
-            <img class="character-card__image" data-id="${character.id}" src="${checkIfThereIsImageInCharacter(character)}"/>
+            <img class="character-card__image" data-id="${character.id}" src="${checkIfThereIsImageInCharacter(character, '/portrait_uncanny')}"/>
         </div>
         <div class="character-card__name-container">
             <h3 class="character-card__name">${character.name}</h3>
@@ -71,10 +41,10 @@ const showCharactersCards = (character) => {
 const checkIfThereIsImageInComic = comic => {
     return comic.images.length 
     ? `${comic.images[0].path}.${comic.images[0].extension}`
-    : `./no-pic.jpg`
+    : auxiliarPicture
 }
 const showComicsCards = (comic) => {
-    return `<article class="comic-card">
+    return `<article class="comic-card card">
         <div class="comic-card__image-container">
             <img class="comic-card__image" data-id="${comic.id}" src="${checkIfThereIsImageInComic(comic)}"/>
         </div>
@@ -84,126 +54,121 @@ const showComicsCards = (comic) => {
     </article>`
 }
 
-const showInformationFromApi = (collection = "comics", orderBy = "title", inputSearch = null) => {
+const checkInputSearch = (inputSearch, collection) => {
     let inputParam = ''
-
     if (inputSearch !== null ) {
         collection == "comics"
         ? inputParam = `&titleStartsWith=${inputSearch}`
         : inputParam = `&nameStartsWith=${inputSearch}`
     }
+    else {
+       inputParam = ''
+    }
+    return inputParam
+}
 
-    fetch(`${baseUrl}${collection}?apikey=${apiKey}&orderBy=${orderBy}${inputParam}&offset=${currentPage * resultsPerPage}`)
-    .then(res => res.json())
-    .then(information => {
-        totalQuantityOfCollection = information.data.total
-        resultsContainer.innerHTML = `
-            <h2 class="results-container__title">Resultados</h2>
-            <h4 class="results-container__total-results">${totalQuantityOfCollection} RESULTADOS</h4>`
-        
-        console.log(information)
+const showNumberOfResults = (number, title = 'Resultados') => {
+    resultsContainer.innerHTML = `
+        <h2 class="results-container__title">${title}</h2>
+        <h4 class="results-container__total-results">${number} RESULTADOS</h4>
+    `
+}
 
-        cardsContainer.innerHTML = ``
-        information.data.results.map( comicOrCharacter => {
-
+const showInfoInHTML = (info, collection) => {
+    cardsContainer.innerHTML = ``
+        info.data.results.map( comicOrCharacter => {
             if (collection == 'characters') {
                 return cardsContainer.innerHTML +=
-                showCharactersCards(comicOrCharacter)
-                
+                showCharactersCards(comicOrCharacter) 
             }
             if (collection == 'comics') {
                 return cardsContainer.innerHTML +=
                 showComicsCards(comicOrCharacter)
             }
-
         });
+}
+
+const showCardInformation = (url, collection) => {
+    fetch(url)
+    .then(res => res.json())
+    .then(card => {
+        collection === 'comics'
+        ? showComicCardInformation(card)
+        : showCharacterCardInformation(card)
+    })
+}
+
+const hideCharacterInfoSection = () => {
+    characterInfoContainer.innerHTML = ``
+    characterInfoContainer.classList.add('hidden')
+}
+
+const showCharacterInfoSection = () => {
+    characterInfoContainer.classList.remove('hidden')
+}
+
+const hideComicInfoSection = () => {
+    comicInfoContainer.innerHTML = ``
+    comicInfoContainer.classList.add('hidden')
+}
+
+const showComicInfoSection = () => {
+    comicInfoContainer.classList.remove('hidden')
+}
+
+const chooseCardForDetails = (collection) => {
+    const cards = document.querySelectorAll('.card')
+    cards.forEach ( card => {
+        card.onclick = (e) => {
+            id = e.target.dataset.id
+            cardsContainer.innerHTML = ``
+            resultsContainer.innerHTML = ``
+            hideComicInfoSection()
+            hideCharacterInfoSection()
+            showCardInformation(`${baseUrl}${collection}/${id}?apikey=${apiKey}`, collection)
+        }
+    })
+}
+
+const showInformationFromApi = (collection = "comics", orderBy = "title", inputSearch = null) => {
+  
+    fetch(`${baseUrl}${collection}?apikey=${apiKey}&orderBy=${orderBy}${checkInputSearch(inputSearch, collection)}&offset=${currentPage * resultsPerPage}`)
+    .then(res => res.json())
+    .then(information => {
+        console.log(information)
+        totalQuantityOfCollection = information.data.total
         let offset = information.data.offset
-
-        if (currentPage == 0) {
-            firstPage.disabled = true
-            previousPage.disabled = true
-            firstPage.classList.add('disable-button')
-            previousPage.classList.add('disable-button')
-        }
-        else{
-            firstPage.disabled = false
-            previousPage.disabled = false
-            firstPage.classList.remove('disable-button')
-            previousPage.classList.remove('disable-button')
-        }
-        if (offset + resultsPerPage > totalQuantityOfCollection) {
-            nextPage.disabled = true
-            lastPage.disabled = true
-            nextPage.classList.add('disable-button')
-            lastPage.classList.add('disable-button')
-        }
-        else {
-            nextPage.disabled = false
-            lastPage.disabled = false
-            nextPage.classList.remove('disable-button')
-            lastPage.classList.remove('disable-button')
-        }
-       
-        comicInfoContainer.innerHTML = ``
-
-        const comicCards = document.querySelectorAll('.comic-card')
-        const charactersCards = document.querySelectorAll('.character-card')
-
-        comicCards.forEach(card => {
-            card.onclick = (e) => {
-                comicId = e.target.dataset.id
-                cardsContainer.innerHTML = ``
-                resultsContainer.innerHTML = ``
-                showComicCardInformation(`${baseUrl}${collection}/${comicId}?apikey=${apiKey}`)
-            }
-        })
-
-        charactersCards.forEach(card => {
-            card.onclick = (e) => {
-                characterId = e.target.dataset.id
-                cardsContainer.innerHTML = ``
-                resultsContainer.innerHTML = ``
-                showCharacterCardInformation(`${baseUrl}${collection}/${characterId}?apikey=${apiKey}`)
-            }
-        })
+        showNumberOfResults(totalQuantityOfCollection)
+        showInfoInHTML(information, collection)
+        enableOrDisablePages(offset, totalQuantityOfCollection)
+        chooseCardForDetails(collection)
     })    
 }
 
 showInformationFromApi()
 
-const showCharacterCardInformation = (url) => {
-    fetch(url)
-    .then(res => res.json())
-    .then(character => {
-        console.log(character)
-        character.data.results.map( character => {
-            const comicInfoContainer = document.querySelector('.comic-information__container')
-            comicInfoContainer.classList.remove('hidden')
-            comicInfoContainer.innerHTML = ``
-            comicInfoContainer.innerHTML =
-                    `<div class="comic-information__image">
-                        <img src="${checkIfThereIsImageInCharacter(character)}" alt="">
-                    </div>
-                    <div class="comic-information">
-                        <h2>${character.name}</h2>
-                        <p>${character.description || "No disponible"}</p>
-                    </div>` 
-        /* const urlWithCharacters = comic.characters.collectionURI
-        showCharactersFromComic(urlWithCharacters) */
+const showCharacterCardInformation = (character) => {
+    console.log(character)
+    character.data.results.map( character => {
+        showCharacterInfoSection()
+        characterInfoContainer.innerHTML =
+        `<div class="character-information__image">
+            <img src="${checkIfThereIsImageInCharacter(character)}" alt="">
+        </div>
+        <div class="character-information">
+            <h2>${character.name}</h2>
+            <p>${character.description || "No disponible"}</p>
+        </div>` 
+        const urlWithCharacters = character.comics.collectionURI
+        showExtraInfo(urlWithCharacters, 'characters')
+        /* disabledPages() */
     })
-
-})
 }
 
-const showComicCardInformation = (url) => {
-fetch(url)
-.then(res => res.json())
-.then(comic => {
+const showComicCardInformation = (comic) => {
     console.log(comic)
     comic.data.results.map( comic => {
-        const comicInfoContainer = document.querySelector('.comic-information__container')
-        comicInfoContainer.classList.remove('hidden')
-        comicInfoContainer.innerHTML = ``
+        showComicInfoSection()
         comicInfoContainer.innerHTML =
                     `<div class="comic-information__image">
                         <img src="${checkIfThereIsImageInComic(comic)}" alt="">
@@ -218,10 +183,9 @@ fetch(url)
                         <p>${comic.description || "No disponible"}</p>
                     </div>` 
         const urlWithCharacters = comic.characters.collectionURI
-        showCharactersFromComic(urlWithCharacters)
+        showExtraInfo(urlWithCharacters, 'comics')
+        /* disabledPages() */
     })
-
-})
 }
 
 const checkIfThereIsWritersInformation = comic => {
@@ -242,35 +206,67 @@ const showComicWriters = comic => {
         return autor.role === 'writer'
     }).map(writer => {return writer.name})
 }
-    
-const showCharactersFromComic = (url) => {
-    fetch(`${url}?apikey=${apiKey}`)
-.then(res => res.json())
-.then(characters => {
-    console.log(characters)
-    if (characters.data.results.length > 0) {
-    characters.data.results.map( character => {
-        console.log(character.name)
-        totalQuantityOfCollection = characters.data.total
-        resultsContainer.innerHTML = `
-            <h2 class="results-container__title">Personajes</h2>
-            <h4 class="results-container__total-results">${totalQuantityOfCollection} RESULTADOS</h4>
-            `
-        return cardsContainer.innerHTML +=
-        showCharactersCards(character)
-    })}
-    else {
-        resultsContainer.innerHTML = `
-            <h2 class="results-container__title">Personajes</h2>
-            <h4 class="results-container__total-results">0 RESULTADOS</h4>
-            `
-        return cardsContainer.innerHTML = `
-        <h2 class="results-container__title">No se han encontrado resultados</h2> 
-        `
-    }
-})
+
+const showExtraInfo = (url, collection) => {
+    fetch(`${url}?apikey=${apiKey}&offset=${currentPage * resultsPerPage}`)
+    .then(res => res.json())
+    .then(extraInfo => {
+        collection === 'comics'
+        ? showCharactersFromComic(extraInfo)
+        : showComicsOfCharacter(extraInfo)
+    })
 }
 
+const showComicsOfCharacter = comics => {
+    console.log(comics)
+    if (comics.data.total > 0 && comics.data.total <= 20){
+        showComics(comics)
+        disabledPages()
+    }
+    else {
+        showNoResults()
+    }
+    /* comics.data.results.length > 0
+    ? showComics(comics)
+    :showNoResults() */
+}
+    
+const showCharactersFromComic = characters => {
+    console.log(characters)
+    characters.data.results.length > 0
+    ? showCharacters(characters)
+    : showNoResults()
+}
+
+const showComics = comics => {
+    comics.data.results.map( comic => {
+        let totalQuantityOfCharacters = comics.data.total
+        showNumberOfResults(totalQuantityOfCharacters, 'Comics')
+        cardsContainer.innerHTML +=
+        showComicsCards(comic)
+        chooseCardForDetails('comics')
+    })
+}
+
+const showCharacters = characters => {
+    characters.data.results.map( character => {
+        let totalQuantityOfCharacters = characters.data.total
+        showNumberOfResults(totalQuantityOfCharacters, 'Personajes')
+        cardsContainer.innerHTML +=
+        showCharactersCards(character)
+        chooseCardForDetails('characters')
+    })
+}
+
+const showNoResults = () => {
+    showNumberOfResults(0, 'Personajes')
+    showNotFoundMessage()
+}
+
+const showNotFoundMessage = () => {
+    return cardsContainer.innerHTML = `
+        <h2 class="results-container__title">No se han encontrado resultados</h2>`
+}
 
 const collectionSearch = document.querySelector('#type-search')
 const alphabethicNewestSearch = document.querySelector('#alphabetic-newest-search')
@@ -278,32 +274,116 @@ const form = document.querySelector('form')
 const inputSearch = document.querySelector('#text-search')
 
 collectionSearch.onchange = () => {
-    if (collectionSearch.value == 'characters') {
-        alphabethicNewestSearch.innerHTML= `
-        <option value="name">A-Z</option>
-        <option value="-name">Z-A</option>
-     `
-    }
-    else {
-        alphabethicNewestSearch.innerHTML= `
-        <option value="title">A-Z</option>
-        <option value="-title">Z-A</option>
-        <option value="-focDate">Mas Nuevos</option>
-        <option value="focDate">Mas Viejos</option>
-     `
-    }
+    collectionSearch.value == 'characters'
+    ? alphabeticSearch()
+    : alphabeticAndDateSearch
+}
+
+const alphabeticSearch = () => {
+    return      alphabethicNewestSearch.innerHTML= `
+    <option value="name">A-Z</option>
+    <option value="-name">Z-A</option>
+ `
+}
+
+const alphabeticAndDateSearch = () => {
+    return alphabethicNewestSearch.innerHTML= `
+    <option value="title">A-Z</option>
+    <option value="-title">Z-A</option>
+    <option value="-focDate">Mas Nuevos</option>
+    <option value="focDate">Mas Viejos</option>
+ `
 }
 
 form.onsubmit = (e) => {
     e.preventDefault()
     restartPages()
+    hideComicInfoSection()
+    hideCharacterInfoSection()
     return inputSearch.value !== ''
     ? showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, inputSearch.value)
     : showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value)
 }
 
+const checkIfThereIsAnInputSearch = () => {
+    inputSearch.value !== "" || inputSearch.value
+}
+
+nextPage.onclick = () => {
+    currentPage ++
+    showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkIfThereIsAnInputSearch())
+}
+
+previousPage.onclick = () => {
+    currentPage --
+    showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkIfThereIsAnInputSearch())
+}
+
+firstPage.onclick = () => {
+    currentPage = 0
+    showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, )
+}
+
+lastPage.onclick = () => {
+    const remainder = totalQuantityOfCollection % resultsPerPage
+    remainder > 0
+    ? currentPage = (totalQuantityOfCollection - (remainder)) / resultsPerPage
+    :currentPage = (totalQuantityOfCollection / resultsPerPage) - 1
+
+    showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkIfThereIsAnInputSearch())
+}
+
 const restartPages = () => currentPage = 0
 
+const enableOrDisableFirstAndPrevious = () => {
+    currentPage == 0
+    ? disableFirstAndPrevious()
+    : ableFirstAndPrevious()
+}
+
+const disableFirstAndPrevious = () => {
+    firstPage.disabled = true
+    previousPage.disabled = true
+    firstPage.classList.add('disable-button')
+    previousPage.classList.add('disable-button')
+}
+
+const ableFirstAndPrevious = () => {
+    firstPage.disabled = false
+    previousPage.disabled = false
+    firstPage.classList.remove('disable-button')
+    previousPage.classList.remove('disable-button')
+}
+
+const enableOrDisableLastAndNext = (offset, totalQuantityOfCollection) => {
+    offset + resultsPerPage > totalQuantityOfCollection
+    ? disableNextAndLast()
+    : ableNextAndLast()
+}
+
+const disableNextAndLast = () => {
+    nextPage.disabled = true
+    lastPage.disabled = true
+    nextPage.classList.add('disable-button')
+    lastPage.classList.add('disable-button')
+}
+
+const ableNextAndLast = () => {
+    nextPage.disabled = false
+    lastPage.disabled = false
+    nextPage.classList.remove('disable-button')
+    lastPage.classList.remove('disable-button')
+}
+
+const enableOrDisablePages = (offset, totalQuantityOfCollection) => {
+    enableOrDisableFirstAndPrevious()
+    enableOrDisableLastAndNext(offset, totalQuantityOfCollection)
+}
+
+const disabledPages = () => {
+    disableNextAndLast()
+    disableFirstAndPrevious()
+}
 
 
 
