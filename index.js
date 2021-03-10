@@ -318,8 +318,7 @@ const checkIfThereIsAnInputSearch = () => {
     inputSearch.value !== "" || inputSearch.value
 }
 
-nextPage.onclick = () => {
-    currentPage ++
+const checkWhichUrlNeedsToFetch = () => {
     if (comicInfoContainer.classList.contains('hidden') && characterInfoContainer.classList.contains('hidden')) {
         showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkIfThereIsAnInputSearch())
     }
@@ -328,30 +327,24 @@ nextPage.onclick = () => {
         ? showExtraInfo(urlWithComics, 'characters')
         : showExtraInfo(urlWithCharacters, 'comics')
     }
+}
+
+nextPage.onclick = () => {
+    currentPage ++
+    checkWhichUrlNeedsToFetch()
+    refreshPage()
 }
 
 previousPage.onclick = () => {
     currentPage --
-    if (comicInfoContainer.classList.contains('hidden') && characterInfoContainer.classList.contains('hidden')) {
-        showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkIfThereIsAnInputSearch())
-    }
-    else {
-        comicInfoContainer.classList.contains('hidden')
-        ? showExtraInfo(urlWithComics, 'characters')
-        : showExtraInfo(urlWithCharacters, 'comics')
-    }
+    checkWhichUrlNeedsToFetch()
+    refreshPage()
 }
 
 firstPage.onclick = () => {
     currentPage = 0
-    if (comicInfoContainer.classList.contains('hidden') && characterInfoContainer.classList.contains('hidden')) {
-        showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, )
-    }
-    else {
-        comicInfoContainer.classList.contains('hidden')
-        ? showExtraInfo(urlWithComics, 'characters')
-        : showExtraInfo(urlWithCharacters, 'comics')
-    }
+    checkWhichUrlNeedsToFetch()
+    refreshPage()
 }
 
 lastPage.onclick = () => {
@@ -360,14 +353,8 @@ lastPage.onclick = () => {
     ? currentPage = (totalQuantityOfCollection - (remainder)) / resultsPerPage
     :currentPage = (totalQuantityOfCollection / resultsPerPage) - 1
 
-    if (comicInfoContainer.classList.contains('hidden') && characterInfoContainer.classList.contains('hidden')) {
-        showInformationFromApi(collectionSearch.value, alphabethicNewestSearch.value, checkIfThereIsAnInputSearch())
-    }
-    else {
-        comicInfoContainer.classList.contains('hidden')
-        ? showExtraInfo(urlWithComics, 'characters')
-        : showExtraInfo(urlWithCharacters, 'comics')
-    }
+    checkWhichUrlNeedsToFetch()
+    refreshPage()
 }
 
 const restartPages = () => currentPage = 0
@@ -437,6 +424,31 @@ const calculateAllPages = () => {
         allPages = totalQuantityOfCollection / resultsPerPage
     }
     pageOfPages.innerHTML = `
-        <p>Pagina ${currentPage + 1} de ${allPages}</p>
+        <p>Pagina <select class="pageNumber">
+        ${putNumberOfOptions(allPages)}
+    </select> de ${allPages}</p>
     `
+    refreshPage()
+    goToEspecificPage()
+}
+
+const refreshPage = () => {
+    const page = document.querySelector('.pageNumber')
+    page.value = currentPage + 1
+}
+
+const goToEspecificPage = () => {
+    const page = document.querySelector('.pageNumber')
+    page.onchange = () => {
+        currentPage = page.value - 1
+        checkWhichUrlNeedsToFetch()
+    }
+}
+
+const putNumberOfOptions = (allPages) => {
+    let option = ''
+    for (let i = 1; i <= allPages; i++) {
+        option +=  `<option value="${i}">${i}</option>`
+    }
+    return option
 }
