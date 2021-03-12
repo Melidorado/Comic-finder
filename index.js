@@ -91,14 +91,16 @@ const showInfoInHTML = (info, collection) => {
         });
 }
 
-const showCardInformation = (url, collection) => {
-    fetch(url)
-    .then(res => res.json())
-    .then(card => {
-        collection === 'comics'
-        ? showComicCardInformation(card)
-        : showCharacterCardInformation(card)
-    })
+const showCardInformation = async (url, collection) => {
+    const response = await fetch(url)
+    const card = await response.json()
+    checkWhichCardToShow(collection, card)
+}
+
+const checkWhichCardToShow = (collection, card) => {
+    collection === 'comics'
+    ? showComicCardInformation(card)
+    : showCharacterCardInformation(card)
 }
 
 const hideCharacterInfoSection = () => {
@@ -133,20 +135,21 @@ const chooseCardForDetails = (collection) => {
     })
 }
 
-const showInformationFromApi = (collection = "comics", orderBy = "title", inputSearch = null) => {
-  
-    fetch(`${baseUrl}${collection}?apikey=${apiKey}&orderBy=${orderBy}${checkInputSearch(inputSearch, collection)}&offset=${currentPage * resultsPerPage}`)
-    .then(res => res.json())
-    .then(information => {
-        console.log(information)
-        totalQuantityOfCollection = information.data.total
-        let offset = information.data.offset
-        showNumberOfResults(totalQuantityOfCollection)
-        showInfoInHTML(information, collection)
-        enableOrDisablePages(offset, totalQuantityOfCollection)
-        calculateAllPages()
-        chooseCardForDetails(collection)
-    })    
+const showInformationFromApi = async (collection = "comics", orderBy = "title", inputSearch = null) => {
+    const response = await fetch(`${baseUrl}${collection}?apikey=${apiKey}&orderBy=${orderBy}${checkInputSearch(inputSearch, collection)}&offset=${currentPage * resultsPerPage}`)
+    const information = await response.json()
+    showInfo(collection, information)
+}
+
+const showInfo = (collection, information) => {
+    console.log(information)
+    totalQuantityOfCollection = information.data.total
+    let offset = information.data.offset
+    showNumberOfResults(totalQuantityOfCollection)
+    showInfoInHTML(information, collection)
+    enableOrDisablePages(offset, totalQuantityOfCollection)
+    calculateAllPages()
+    chooseCardForDetails(collection)
 }
 
 showInformationFromApi()
@@ -209,14 +212,16 @@ const showComicWriters = comic => {
     }).map(writer => {return writer.name})
 }
 
-const showExtraInfo = (url, collection) => {
-    fetch(`${url}?apikey=${apiKey}&offset=${currentPage * resultsPerPage}`)
-    .then(res => res.json())
-    .then(extraInfo => {
-        collection === 'comics'
-        ? showCharactersFromComic(extraInfo)
-        : showComicsOfCharacter(extraInfo)
-    })
+const showExtraInfo = async (url, collection) => {
+    const response = await fetch(`${url}?apikey=${apiKey}&offset=${currentPage * resultsPerPage}`)
+    const extraInfo = await response.json()
+    checkWhichExtraInfoShows(collection, extraInfo)
+}
+
+const checkWhichExtraInfoShows = (collection, extraInfo) => {
+    collection === 'comics'
+    ? showCharactersFromComic(extraInfo)
+    : showComicsOfCharacter(extraInfo)
 }
 
 const checkPages = collection => {
