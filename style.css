@@ -91,6 +91,19 @@ header .web-title {
 }
 .search .search__input-container--text-search {
   width: 45%;
+  position: relative;
+}
+.search .search__input-container--text-search .icon {
+  position: absolute;
+  top: 12px;
+  left: 8px;
+  font-size: 17px;
+}
+@media (max-width: 768px) {
+  .search .search__input-container--text-search .icon {
+    top: 7px;
+    font-size: 14px;
+  }
 }
 .search .search__input-container--text-search #text-search {
   border: 0;
