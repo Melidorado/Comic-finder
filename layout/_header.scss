@@ -1,0 +1,48 @@
+header {
+    width: 100vw;
+    background-color: $main-background-color;
+    height: 50px;
+    @extend %flex-centered;
+    .web-title {
+        font-family: $title-font;
+        color: $title-font-color;
+        background-color: $secondary-background-color;
+        padding:  0 10px;
+        font-size: 45px;
+        @media (max-width: $layout-breakpoint-max-smalldevice) {
+            font-size: 35px;
+        }
+        @media (max-width: $layout-breakpoint-max-extrasmalldevice) {
+            font-size: 25spx;
+        }
+    }
+    @media (max-width: $layout-breakpoint-max-smalldevice) {
+        height: 40px;
+    }
+    @media (max-width: $layout-breakpoint-max-extrasmalldevice) {
+        height: 30px;
+    }
+}
+
+.banner {
+    width: 100vw;
+    height: 400px;
+    background-image: url(https://frontend-proyecto-comics.adaitw.org/hero.jpg);
+    background-size: cover;
+    position: relative;
+    &::before {
+        content:'';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0,0,0,0.5);
+    }
+    @media (max-width: $layout-breakpoint-max-smalldevice) {
+        height: 300px;
+    }
+    @media (max-width: $layout-breakpoint-max-extrasmalldevice) {
+        height: 200px;
+    }
+}

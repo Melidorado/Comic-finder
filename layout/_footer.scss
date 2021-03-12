@@ -1,0 +1,12 @@
+footer {
+    height: 89px;
+    background-color: $main-background-color;
+    @extend %flex-centered;
+    color: $title-font-color;
+    @media (max-width: $layout-breakpoint-max-smalldevice) {
+        font-size: 15px;
+    }
+    @media (max-width: $layout-breakpoint-max-extrasmalldevice) {
+        font-size: 10px;
+    }
+}

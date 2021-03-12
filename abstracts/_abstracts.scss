@@ -16,4 +16,7 @@
     letter-spacing: 1px;
     color: $secondary-font-color;
     margin-right: 10px;
+    @media (max-width: $layout-breakpoint-max-smalldevice) {
+        font-size: 11px;
+    }
 }

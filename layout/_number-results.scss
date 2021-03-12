@@ -1,0 +1,11 @@
+.results-container {
+    margin: 0 10px;
+    .results-container__total-results {
+        @include subtitle;
+    }
+    h2 {
+        @media (max-width: $layout-breakpoint-max-smalldevice) {
+            font-size: 22px;
+        }
+    }
+}

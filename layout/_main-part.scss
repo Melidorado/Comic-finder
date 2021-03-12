@@ -1,0 +1,25 @@
+@import "search-form";
+@import "comic-info";
+@import "character-info";
+@import "number-results";
+@import "search-results";
+@import "pagination.scss";
+@import "loader.scss";
+
+.search-and-results-container {
+    width: 100vw;
+    @extend %flex-centered;
+    flex-direction: column;
+    position: relative;
+    .search-and-results {
+        width: 80%;
+        padding: 20px;
+        @media (max-width: $layout-breakpoint-max-largedevice) {
+            width: 90%;
+        }
+        @media (max-width: $layout-breakpoint-max-mediumdevice) {
+            width: 95%;
+        }
+    }
+}
+

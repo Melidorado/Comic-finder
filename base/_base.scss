@@ -7,7 +7,14 @@ $button-font-color: #ffffff;
 $hover-font-color: #ed1d23;
 $disable-button-color: #757575;
 
+
 @import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
 
 $main-font: 'Roboto', sans-serif;
 $title-font:  'Bangers', cursive;
+
+
+$layout-breakpoint-max-largedevice: 1200px;
+$layout-breakpoint-max-mediumdevice: 992px;
+$layout-breakpoint-max-smalldevice: 768px;
+$layout-breakpoint-max-extrasmalldevice: 576px;

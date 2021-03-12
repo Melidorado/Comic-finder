@@ -1,0 +1,90 @@
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+
+    .comic-card {
+        display: flex;
+        flex-direction: column;
+        width: calc(100% / 5 - 2 * 10px);
+        margin: 0 10px 40px;
+        .comic-card__image-container{
+            flex-grow: 1;
+            .comic-card__image{
+                width: 100%;
+                height: 100%;
+                box-shadow: 0 26px 24px -16px rgb(0 0 0 / 40%);
+                transform: translateY(0);
+                transition: 0.2s;
+            }
+        }
+        
+        .comic-card__description{
+            height: 64px;
+            margin-top: 25px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: 0.2s;
+            @media (max-width: $layout-breakpoint-max-smalldevice) {
+                height: 24px;
+                font-size: 11px;
+                margin-top: 20px;
+            }
+        }
+        &:hover {
+            .comic-card__image{
+                transform: translateY(-10px);
+            }
+            .comic-card__description{
+                color: $hover-font-color;
+            }
+        }
+        @media (max-width: $layout-breakpoint-max-smalldevice) {
+            width: calc(100% / 3 - 2 * 10px);
+            margin: 0 10px 30px;
+        }
+    }
+    
+    .character-card {
+        display: flex;
+        flex-direction: column;
+        width: calc(100% / 6 - 2 * 10px);
+        margin: 0 10px 40px;
+        cursor: pointer;
+        .character-card__image-container{
+            border-bottom: 4px solid $secondary-background-color;
+            overflow: hidden;
+            .character-card__image{
+                width: 100%;
+                height: 100%;
+                transition: 0.2s;
+            }
+        }
+        .character-card__name-container{
+            background-color: $main-background-color;
+            padding: 16px 24px 17px 20px;
+            transition: 0.2s;
+            .character-card__name{
+                font-size: 14px;
+                color: $title-font-color;
+                margin:0;
+                height: 60px;
+                @media (max-width: $layout-breakpoint-max-smalldevice) {
+                    height: 40px;
+                    font-size: 11px; 
+                }
+            }
+        }
+        &:hover {
+            .character-card__image{
+                transform: scale(1.1);
+            }
+            .character-card__name-container{
+                background-color: $secondary-background-color;
+            }
+        }
+        @media (max-width: $layout-breakpoint-max-smalldevice) {
+            width: calc(100% / 4 - 2 * 10px);
+            margin: 0 10px 30px;
+        }
+    }
+}

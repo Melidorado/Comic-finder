@@ -1,0 +1,56 @@
+.comic-information__container{
+    margin: 60px 10px 80px;
+    display: flex;
+    .comic-information__image {
+        max-width: 300px;
+        img {
+            width: 100%;
+        }
+        @media (max-width: $layout-breakpoint-max-smalldevice) {
+            max-width: 250px;
+        }
+        @media (max-width: $layout-breakpoint-max-extrasmalldevice) {
+            max-width: 200px;
+        }
+    }
+    .comic-information {
+        margin-left: 60px;
+        h2 {
+            margin-top: 0;
+            @media (max-width: $layout-breakpoint-max-smalldevice) {
+                font-size: 20px;
+            }
+            @media (max-width: $layout-breakpoint-max-extrasmalldevice) {
+                font-size: 18px;
+            }
+        }
+        h3 {
+            @media (max-width: $layout-breakpoint-max-smalldevice) {
+                font-size: 17px;
+            }
+            @media (max-width: $layout-breakpoint-max-extrasmalldevice) {
+                font-size: 14px;
+            }
+        }
+        p {
+            @media (max-width: $layout-breakpoint-max-smalldevice) {
+                font-size: 13px;
+            }
+            @media (max-width: $layout-breakpoint-max-extrasmalldevice) {
+                font-size: 10px;
+            }
+        }
+        @media (max-width: $layout-breakpoint-max-smalldevice) {
+            margin-left: 40px;
+        }
+        @media (max-width: $layout-breakpoint-max-extrasmalldevice) {
+            margin-left: 30px;
+        }
+    }
+    @media (max-width: $layout-breakpoint-max-smalldevice) {
+        margin: 60px 10px 60px;
+    }
+    @media (max-width: $layout-breakpoint-max-extrasmalldevice) {
+        margin: 60px 10px 50px;
+    }
+}
