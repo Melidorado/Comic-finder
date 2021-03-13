@@ -457,3 +457,12 @@ const putNumberOfOptions = (allPages) => {
     }
     return option
 }
+
+const darkModeToggleButton = document.querySelector('.switch')
+const body = document.body
+
+darkModeToggleButton.onclick = () => {
+    darkModeToggleButton.classList.toggle('dark-mode')
+    body.classList.toggle('dark')
+}
+

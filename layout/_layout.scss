@@ -1,6 +1,45 @@
 body {
     margin: 0;
     font-family: $main-font;
+    &.dark {
+        background-color: $main-background-color;
+        footer {
+            background-color: black;
+        }
+        h2 {
+            color: white;
+        }
+        .pages-button {
+            background-color: $secondary-background-color;
+        }
+        .search-button {
+            background-color: $secondary-background-color !important;
+        }
+        .search__input-container {
+            i {
+                color: white;
+            }
+            #text-search {
+                background-color: $main-background-color;
+                border-bottom: 2px solid $secondary-font-color;
+            }
+            select {
+                background-color: $main-background-color;
+                color: white
+            }
+        }
+
+        p{
+            color: white;
+        }
+        h3 {
+            color: white;
+        }
+
+        .character-card__name-container{
+            background-color: black !important;
+        }
+    }
 }
 
 @import "header.scss";

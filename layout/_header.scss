@@ -46,3 +46,107 @@ header {
         height: 200px;
     }
 }
+
+
+.toggle-dark-mode {
+    top: 7px;
+    right: 50px;
+    position: absolute;
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 65px;
+        height: 34px;
+        border: none;
+        border-radius: 34px;
+        outline: none;
+        background-color: #ccc;
+        cursor: pointer;
+        transition: .4s;
+        .moon {
+            position: absolute;
+            top: 2px;
+            left: 35px;
+            font-size: 25px;
+            &::before{
+                content: "\1F31C"; 
+            }
+            @media (max-width: $layout-breakpoint-max-smalldevice) {
+                top: 0;
+            }
+            @media (max-width: $layout-breakpoint-max-extrasmalldevice) {
+                top: -3px;
+                font-size: 20px;
+            }
+        }
+        .sun {
+            position: absolute;
+            font-size: 25px;
+            top: 2px;
+            left: 6px;
+            &::before {
+                content: "\1F31E";
+            }
+            @media (max-width: $layout-breakpoint-max-smalldevice) {
+                top: 0;
+            }
+            @media (max-width: $layout-breakpoint-max-extrasmalldevice) {
+                top: -3px;
+                font-size: 20px;
+            }
+        }
+        &::after {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 35px;
+            bottom: 4px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            z-index: 1;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            @media (max-width: $layout-breakpoint-max-smalldevice) {
+                bottom: 2px;
+            }
+            @media (max-width: $layout-breakpoint-max-extrasmalldevice) {
+                bottom: 0;
+                height: 22px;
+                width: 22px;
+            }
+        }
+        &.dark-mode {
+            &::after{
+                transform: translateX(26px);
+                left: -20px;
+            }
+        }
+        @media (max-width: $layout-breakpoint-max-smalldevice) {
+            height: 30px;
+        }
+        @media (max-width: $layout-breakpoint-max-extrasmalldevice) {
+            height: 22px;
+            width: 60px;
+        }
+        
+    }
+    @media (max-width: $layout-breakpoint-max-smalldevice) {
+        top: 5px;
+        right: 30px;
+
+    }
+    @media (max-width: $layout-breakpoint-max-extrasmalldevice) {
+        right: 10px;
+        top: 0;
+    }
+}
+
+
+
+
+
+
+
+
