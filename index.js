@@ -473,5 +473,23 @@ const body = document.body
 darkModeToggleButton.onclick = () => {
     darkModeToggleButton.classList.toggle('dark-mode')
     body.classList.toggle('dark')
+    saveDarkMode()
 }
 
+const saveDarkMode = () => {
+    body.classList.contains('dark')
+    ?localStorage.setItem('dark-mode', true) 
+    :localStorage.setItem('dark-mode', false);
+}
+
+const checkMode = () => {
+    if (localStorage.getItem('dark-mode') === 'true') {
+        body.classList.add('dark');
+        darkModeToggleButton.classList.add('dark-mode');
+    } else {
+        body.classList.remove('dark');
+        darkModeToggleButton.classList.remove('dark-mode');
+    }
+}
+
+checkMode()
