@@ -656,7 +656,7 @@ header .web-title {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
+  position: fixed;
   top: 0;
 }
 .loader-container .spin-loader {
