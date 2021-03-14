@@ -4,6 +4,7 @@
         @include subtitle;
     }
     h2 {
+        transition: 0.4s;
         @media (max-width: $layout-breakpoint-max-smalldevice) {
             font-size: 22px;
         }

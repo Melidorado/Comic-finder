@@ -1,4 +1,5 @@
 @mixin select {
+    transition: 0.4s;
     font-family: $main-font;
     font-size: 14px;
     font-weight: bold;
@@ -20,7 +21,7 @@
     padding: 10px 20px;
     margin: 0 5px;
     cursor: pointer;
-    transition: 0.2s;
+    transition: 0.4s;
     outline-color: $secondary-background-color;
     &:hover {
         background-color: $secondary-background-color;

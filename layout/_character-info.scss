@@ -10,6 +10,7 @@
     .character-information {
         margin-left: 60px;
         h2 {
+            transition: 0.4s;
             margin-top: 0;
             @media (max-width: $layout-breakpoint-max-smalldevice) {
                 font-size: 22px;
@@ -19,6 +20,7 @@
             }
         }
         p {
+            transition: 0.4s;
             @media (max-width: $layout-breakpoint-max-smalldevice) {
                 font-size: 13px;
             } 

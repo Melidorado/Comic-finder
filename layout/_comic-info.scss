@@ -16,6 +16,7 @@
     .comic-information {
         margin-left: 60px;
         h2 {
+            transition: 0.4s;
             margin-top: 0;
             @media (max-width: $layout-breakpoint-max-smalldevice) {
                 font-size: 20px;
@@ -25,6 +26,7 @@
             }
         }
         h3 {
+            transition: 0.4s;
             @media (max-width: $layout-breakpoint-max-smalldevice) {
                 font-size: 17px;
             }
@@ -33,6 +35,7 @@
             }
         }
         p {
+            transition: 0.4s;
             @media (max-width: $layout-breakpoint-max-smalldevice) {
                 font-size: 13px;
             }

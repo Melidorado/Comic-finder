@@ -1,4 +1,5 @@
 footer {
+    transition: 0.4s;
     height: 89px;
     background-color: $main-background-color;
     @extend %flex-centered;

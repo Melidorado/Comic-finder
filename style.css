@@ -15,6 +15,7 @@ footer, .search-and-results-container, .pages .pages-button, .pages, header {
 body {
   margin: 0;
   font-family: "Roboto", sans-serif;
+  transition: 0.4s;
 }
 body.dark {
   background-color: #151515;
@@ -231,6 +232,9 @@ header .web-title {
     flex-direction: column;
   }
 }
+.search h2 {
+  transition: 0.4s;
+}
 @media (max-width: 768px) {
   .search h2 {
     font-size: 22px;
@@ -241,6 +245,7 @@ header .web-title {
   position: relative;
 }
 .search .search__input-container--text-search .icon {
+  transition: 0.4s;
   position: absolute;
   top: 12px;
   left: 8px;
@@ -253,6 +258,7 @@ header .web-title {
   }
 }
 .search .search__input-container--text-search #text-search {
+  transition: 0.4s;
   border: 0;
   border-bottom: 2px solid #151515;
   padding: 5px 35px;
@@ -288,6 +294,7 @@ header .web-title {
   }
 }
 .search .search__input-container--select-search .select-search select {
+  transition: 0.4s;
   font-family: "Roboto", sans-serif;
   font-size: 14px;
   font-weight: bold;
@@ -310,7 +317,7 @@ header .web-title {
   padding: 10px 20px;
   margin: 0 5px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.4s;
   outline-color: #ed1d23;
 }
 .search .search__input-container--select-search .search-button:hover {
@@ -361,6 +368,7 @@ header .web-title {
   margin-left: 60px;
 }
 .comic-information__container .comic-information h2 {
+  transition: 0.4s;
   margin-top: 0;
 }
 @media (max-width: 768px) {
@@ -373,6 +381,9 @@ header .web-title {
     font-size: 18px;
   }
 }
+.comic-information__container .comic-information h3 {
+  transition: 0.4s;
+}
 @media (max-width: 768px) {
   .comic-information__container .comic-information h3 {
     font-size: 17px;
@@ -382,6 +393,9 @@ header .web-title {
   .comic-information__container .comic-information h3 {
     font-size: 14px;
   }
+}
+.comic-information__container .comic-information p {
+  transition: 0.4s;
 }
 @media (max-width: 768px) {
   .comic-information__container .comic-information p {
@@ -428,6 +442,7 @@ header .web-title {
   margin-left: 60px;
 }
 .character-information__container .character-information h2 {
+  transition: 0.4s;
   margin-top: 0;
 }
 @media (max-width: 768px) {
@@ -439,6 +454,9 @@ header .web-title {
   .character-information__container .character-information h2 {
     font-size: 18px;
   }
+}
+.character-information__container .character-information p {
+  transition: 0.4s;
 }
 @media (max-width: 768px) {
   .character-information__container .character-information p {
@@ -480,6 +498,9 @@ header .web-title {
   .results-container .results-container__total-results {
     font-size: 11px;
   }
+}
+.results-container h2 {
+  transition: 0.4s;
 }
 @media (max-width: 768px) {
   .results-container h2 {
@@ -579,6 +600,9 @@ header .web-title {
   }
 }
 
+.total-pages {
+  transition: 0.4s;
+}
 @media (max-width: 768px) {
   .total-pages {
     font-size: 15px;
@@ -603,7 +627,7 @@ header .web-title {
   padding: 10px 20px;
   margin: 0 5px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.4s;
   outline-color: #ed1d23;
   width: 40px;
   height: 40px;
@@ -700,6 +724,7 @@ header .web-title {
 }
 
 footer {
+  transition: 0.4s;
   height: 89px;
   background-color: #151515;
   color: #ffffff;

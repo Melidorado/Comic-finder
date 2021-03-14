@@ -1,4 +1,5 @@
 .total-pages {
+    transition: 0.4s;
     @media (max-width: $layout-breakpoint-max-smalldevice) {
         font-size: 15px;
     }

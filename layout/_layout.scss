@@ -1,6 +1,7 @@
 body {
     margin: 0;
     font-family: $main-font;
+    transition: 0.4s;
     &.dark {
         background-color: $main-background-color;
         footer {
