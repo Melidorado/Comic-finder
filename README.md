@@ -17,7 +17,7 @@ El diseño a seguir fue el siguiente [Buscador de Comics](https://frontend-proye
 
 ## Proyecto 🚀
 
-Click 👉🏽 **[aquí](https://melidorado.github.io/Shop-Proyecto-2/)** para ver el Buscador de Comics
+Click 👉🏽 **[aquí](https://melidorado.github.io/Comic-finder/)** para ver el Buscador de Comics
 
 ---
 ⌨️ con ❤️ por [Melidorado](https://github.com/Melidorado) 😊
@@ -42,7 +42,7 @@ The design that was given to follow was the next one [Comic Finder](https://fron
 
 ## Project 🚀
 
-Click 👉🏽 **[here](https://melidorado.github.io/Shop-Proyecto-2/)** to see the Comic Finder
+Click 👉🏽 **[here](https://melidorado.github.io/Comic-finder/)** to see the Comic Finder
 
 ---
 ⌨️ with ❤️ by [Melidorado](https://github.com/Melidorado) 😊
