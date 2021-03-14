@@ -92,6 +92,7 @@ const showInfoInHTML = (info, collection) => {
 }
 
 const showCardInformation = async (url, collection) => {
+    waitInfoWithLoader()
     const response = await fetch(url)
     const card = await response.json()
     checkWhichCardToShow(collection, card)
@@ -137,9 +138,9 @@ const chooseCardForDetails = (collection) => {
 }
 
 const showInformationFromApi = async (collection = "comics", orderBy = "title", inputSearch = null) => {
+    waitInfoWithLoader()
     const response = await fetch(`${baseUrl}${collection}?apikey=${apiKey}&orderBy=${orderBy}${checkInputSearch(inputSearch, collection)}&offset=${currentPage * resultsPerPage}`)
     const information = await response.json()
-    waitInfoWithLoader()
     showInfo(collection, information)
 }
 
@@ -147,7 +148,7 @@ const waitInfoWithLoader = () => {
     loader.classList.remove('hidden')
     setTimeout(chargingLoader = () => {
         loader.classList.add('hidden')
-    }, 1500)
+    }, 2000)
 }
 
 const showInfo = (collection, information) => {
