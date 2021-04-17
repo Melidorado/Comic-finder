@@ -7,7 +7,9 @@ const comicInfoContainer = document.querySelector(
 const characterInfoContainer = document.querySelector(
   ".character-information__container"
 );
-
+// Detalle hiper hincha, pero por qué hay espacios entre algunas variables y no entre 
+// otras? En general queremos consistencia: si dejamos un salto de linea vacio
+// entre cada variable, lo hacemos para todas, o ninguna. 
 const resultsContainer = document.querySelector(".results-container");
 
 const loader = document.querySelector("#loader-container");
@@ -22,10 +24,15 @@ let currentPage = 0;
 const resultsPerPage = 20;
 let totalQuantityOfCollection = "";
 const noInfoAvailableMessage = "No disponible";
+// Si un string no tiene variables dentro, privilegiamos comillas simples '' o dobles "", 
+// pero no backticks ``
 const auxiliarPicture = `./no-pic.jpg`;
 let urlWithCharacters = "";
 let urlWithComics = "";
 
+// GRACIAS por nombres de funciones asi. Claro, descriptivo, correcto. 
+// No me cabe duda de lo que hace esta funcion incluso sin verla: 
+// eso es lo que quiero para todos los nombres. 
 const checkIfThereIsImageInCharacter = (comic, size = "") => {
   return comic.thumbnail.path.endsWith(`image_not_available`)
     ? auxiliarPicture
@@ -33,6 +40,7 @@ const checkIfThereIsImageInCharacter = (comic, size = "") => {
 };
 
 const showCharactersCards = (character) => {
+  // Agreguemos un alt en la img con el nombre del personaje, para accesibilidad
   return `<article class="character-card card" >
          <div class="character-card__image-container">
             <img class="character-card__image" data-id="${
@@ -54,6 +62,7 @@ const checkIfThereIsImageInComic = (comic) => {
     : auxiliarPicture;
 };
 const showComicsCards = (comic) => {
+  // No olvides el alt en tus imagenes!
   return `<article class="comic-card card">
         <div class="comic-card__image-container">
             <img class="comic-card__image" data-id="${
@@ -86,7 +95,7 @@ const showNumberOfResults = (number, title = "Resultados") => {
 };
 
 const showInfoInHTML = (info, collection) => {
-  cardsContainer.innerHTML = ``;
+  cardsContainer.innerHTML = ``; // "" o ''
   info.data.results.map((comicOrCharacter) => {
     if (collection == "characters") {
       return (cardsContainer.innerHTML += showCharactersCards(
@@ -112,8 +121,15 @@ const checkWhichCardToShow = (collection, card) => {
     : showCharacterCardInformation(card);
 };
 
+
+// Podriamos mejorar esto teniendo una funcion hideElement() y una showElement()
+// que reciban por params la seccion a ocultar. 
+// const hideElement = (HTMLElement) => {
+//   HTMLElement.classList.add("hidden")
+// }
+
 const hideCharacterInfoSection = () => {
-  characterInfoContainer.innerHTML = ``;
+  characterInfoContainer.innerHTML = ``; // "" o ''
   characterInfoContainer.classList.add("hidden");
 };
 
@@ -135,8 +151,8 @@ const chooseCardForDetails = (collection) => {
   cards.forEach((card) => {
     card.onclick = (e) => {
       id = e.target.dataset.id;
-      cardsContainer.innerHTML = ``;
-      resultsContainer.innerHTML = ``;
+      cardsContainer.innerHTML = ``; // ""
+      resultsContainer.innerHTML = ``; // ""
       hideComicInfoSection();
       hideCharacterInfoSection();
       waitInfoWithLoader();
@@ -148,6 +164,7 @@ const chooseCardForDetails = (collection) => {
   });
 };
 
+// hermoso este uso de aync await!!
 const showInformationFromApi = async (
   collection = "comics",
   orderBy = "title",
@@ -167,6 +184,7 @@ const showInformationFromApi = async (
 const waitInfoWithLoader = () => {
   loader.classList.remove("hidden");
   setTimeout(
+    // no es necesario declarar una funcion aqui, podes poner el codigo directamente
     (chargingLoader = () => {
       loader.classList.add("hidden");
     }),
@@ -359,6 +377,10 @@ form.onsubmit = (e) => {
 };
 
 const checkIfThereIsAnInputSearch = () => {
+  // esta funcion retorna o un string, o un booleano. En general
+  // es mejor que siempre retorne el mismo tipo de dato
+  // Es necesario que retorne el booleano? Por que no
+  // retornar el string vacio?
   inputSearch.value !== "" || inputSearch.value;
 };
 
@@ -381,6 +403,7 @@ const checkWhichUrlNeedsToFetch = () => {
 
 nextPage.onclick = () => {
   currentPage++;
+  // perfecta esta funcion!!
   checkWhichUrlNeedsToFetch();
   refreshPage();
 };
@@ -510,6 +533,8 @@ darkModeToggleButton.onclick = () => {
 };
 
 const saveDarkMode = () => {
+  // perfecto el uso de localStorage, asi en futuras sesiones el usuario
+  // siempre puede volver a su configuracion favorita
   body.classList.contains("dark")
     ? localStorage.setItem("dark-mode", true)
     : localStorage.setItem("dark-mode", false);

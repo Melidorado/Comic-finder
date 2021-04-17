@@ -13,11 +13,17 @@
         <h1 class="web-title">ADA COMICS</h1>
         <div class="toggle-dark-mode">
             <button class="switch">
+                <!-- Rellenaste estos span con ::before y css. No esta mal, pero afecta
+                la accesibilidad de tu pagina (la mayoria de los lectores de pantalla
+                no van a leer ese content en before). Seria preferible tener el emoji aqui.  -->
                 <span class="sun">
                     
                 </span>
                 <span class="moon">
-                    
+                    <!-- Para cualquier etiqueta que no tiene contenido (ya sea que no lo
+                    soporta, como input, o que justo en este caso no lo necesita, 
+                    como este span), privilegiamos el auto cierre:
+                    <span class="moon" /> -->
                 </span>
             </button>
         </div>
